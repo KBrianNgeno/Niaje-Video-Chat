@@ -1,0 +1,68 @@
+{% extends "main.html" %}
+
+{% load static %}
+
+{% block content %}
+
+    {% include 'navbar.html' %}
+
+    <main id="room__lobby__container">
+        <div id="form__container">
+             <div id="form__container__header">
+                 <p>👋 Create or Join Room</p>
+             </div>
+ 
+ 
+            <form id="lobby__form">
+ 
+                 <div class="form__field__wrapper">
+                     <label>Your Name</label>
+                     <input type="text" name="name"  placeholder="Enter your display name..." />
+                 </div>
+
+                 <div class="form__field__wrapper">
+                     <label>Room Name</label>
+                     <input type="text" name="room" required placeholder="Enter room name..." style="text-transform:uppercase;"/>
+                 </div>
+ 
+                 <div class="form__field__wrapper">
+                     <button type="submit">Go to Room 
+                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M13.025 1l-2.847 2.828 6.176 6.176h-16.354v3.992h16.354l-6.176 6.176 2.847 2.828 10.975-11z"/></svg>
+                    </button>
+                 </div>
+            </form>
+        </div>
+     </main>
+
+     {% comment %} <script type="text/javascript" src="{% static 'js/lobby.js' %}"></script>  {% endcomment %}
+     <script>
+         let form = document.getElementById('lobby__form')
+
+        let handleSubmit = async (e) => {
+            e.preventDefault()
+            let room = e.target.room.value.toUpperCase()
+            let response = await fetch(`/get_token/?channel=${room}`)
+            let data = await response.json()
+
+            let UID = data.uid
+            let token = data.token
+            let rtmToken = data.rtmToken
+
+            sessionStorage.setItem('UID', UID)
+            sessionStorage.setItem('token', token)
+            sessionStorage.setItem('rtmToken', rtmToken)
+            sessionStorage.setItem('room', room)
+
+            window.open('/room/', '_self')
+            //window.open('/room/')
+            
+        }
+
+        form.addEventListener('submit', handleSubmit)
+     </script>
+
+{% endblock %}
+
+{% comment %} {% block scripts %}
+    <script type="text/javascript" src="{% static 'js/lobby.js' %}">
+{% endblock %} {% endcomment %}

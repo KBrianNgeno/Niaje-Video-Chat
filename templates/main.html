@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+
+{% load static %}
+
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Niaje! Video Chat</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="{% static 'styles/main.css' %}">
+        <link rel="stylesheet" href="{% static 'styles/room.css' %}">
+        <link rel="stylesheet" href="{% static 'styles/lobby.css' %}">
+    </head>
+    <body>
+
+        {% include 'navbar.html' %}
+        
+        {% block content %}
+
+        {% endblock %}
+
+        
+        
+    </body>
+    {% comment %} <script type="text/javascript" src="{% static 'js/AgoraRTC_N-4.11.1.js' %}"></script> {% endcomment %}
+    {% comment %} <script type="text/javascript" src="{% static 'js/lobby.js' %}"></script>     {% endcomment %}
+    {% comment %} <script type="text/javascript" src="{% static 'js/room.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/room_rtc.js' %}"></script> {% endcomment %}
+    {% block scripts %}
+
+    {% endblock %}
+    
+</html>
