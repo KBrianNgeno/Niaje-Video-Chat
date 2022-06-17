@@ -1,7 +1,7 @@
-const APP_ID = '631c8eeec6134d3994e7ac0eb14edf3f'
+const APP_ID = 'f0c8d127f8434b5ba355114d9e3a2f6f'
 const CHANNEL = sessionStorage.getItem('room')
 const TOKEN = sessionStorage.getItem('token')
-const RTM_TOKEN = sessionStorage.getItem('rtmToken')
+let RTM_TOKEN = sessionStorage.getItem('rtmToken')
 // let UID = Number(sessionStorage.getItem('UID'))
 let UID = sessionStorage.getItem('UID')
 let client;
@@ -37,6 +37,7 @@ let sharingScreen = false
 
 let rtmInit = async() => {
     rtmClient = await AgoraRTM.createInstance(APP_ID)
+    // let uid = UID.toString()
     console.log(typeof(UID))
     await rtmClient.login({UID, RTM_TOKEN})
 

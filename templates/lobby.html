@@ -44,13 +44,13 @@
             let response = await fetch(`/get_token/?channel=${room}`)
             let data = await response.json()
 
-            let UID = data.uid
+            let UID = data.userAccount
             let token = data.token
             let rtmToken = data.rtmToken
 
             sessionStorage.setItem('UID', UID)
             sessionStorage.setItem('token', token)
-            sessionStorage.setItem('rtmToken', rtmToken)
+            sessionStorage.setItem('rtmToken', rtmToken),
             sessionStorage.setItem('room', room)
 
             window.open('/room/', '_self')
