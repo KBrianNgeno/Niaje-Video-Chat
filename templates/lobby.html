@@ -50,19 +50,21 @@
 
         let handleSubmit = async (e) => {
             e.preventDefault()
-            sessionStorage.setItem('display_name', e.target.name.value)
+            
             let room = e.target.room.value.toUpperCase()
+            let name =  e.target.name.value
             let response = await fetch(`/get_token/?channel=${room}`)
             let data = await response.json()
 
-            let UID = data.userAccount
+            let uid = data.userAccount
             let token = data.token
             let rtmToken = data.rtmToken
 
-            sessionStorage.setItem('UID', UID)
+            sessionStorage.setItem('uid', uid)
             sessionStorage.setItem('token', token)
             sessionStorage.setItem('rtmToken', rtmToken),
             sessionStorage.setItem('room', room)
+            sessionStorage.setItem('name', name)
 
             window.open('/room/', '_self')
             //window.open('/room/')

@@ -3,9 +3,12 @@ from django.http import HttpResponse, JsonResponse
 from django.contrib.auth import authenticate, login
 from agora_token_builder import RtcTokenBuilder, RtmTokenBuilder
 from django.utils.crypto import get_random_string
-from .forms import RoomForm
+# from .forms import RoomForm
 # import random
 import time
+import json
+from .models import RoomMember
+from django.views.decorators.csrf import csrf_exempt
 
 def lobby(request):
     return render(request, 'lobby.html')
@@ -50,3 +53,40 @@ def getToken(request):
     # rtmToken = RtmTokenBuilder.buildToken(appId, appCertificate, userAccount, role, privilegeExpiredTs)
     rtmToken = RtmTokenBuilder.buildToken(appId, appCertificate, userAccount, role, privilegeExpiredTs)
     return JsonResponse({'token': token, 'rtmToken': rtmToken, 'userAccount': userAccount}, safe=False)
+
+@csrf_exempt
+def createMember(request):
+    data = json.loads(request.body)
+
+    member, created = RoomMember.objects.get_or_create(
+        name = data['name'],
+        uid = data['uid'],
+        room_name = data['room_name']
+    )
+
+    return JsonResponse({'name': data['name']}, safe=False)
+
+def getMember(request):
+    uid = request.GET.get('uid')
+    room_name = request.GET.get('room_name')
+
+    member = RoomMember.objects.get(
+        uid = uid,
+        room_name = room_name,
+    )
+
+    name = member.name
+    return JsonResponse({'name': name}, safe=False)
+
+@csrf_exempt
+def deleteMember(request):
+    data = json.loads(request.body)
+
+    member = RoomMember.objects.get(
+        name = data['name'],
+        uid = data['uid'],
+        room_name = data['room_name'],
+    )
+
+    member.delete()
+    return JsonResponse('Member deleted successfully.', safe=False)

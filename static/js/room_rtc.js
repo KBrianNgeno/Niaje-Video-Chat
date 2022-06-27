@@ -3,13 +3,13 @@ const CHANNEL = sessionStorage.getItem('room')
 const channelId = String(sessionStorage.getItem('room'))
 const TOKEN = sessionStorage.getItem('token')
 let token = sessionStorage.getItem('rtmToken')
-let UID = sessionStorage.getItem('UID')
-let uid = String(sessionStorage.getItem('UID'))
+let UID = sessionStorage.getItem('uid')
+let uid = String(sessionStorage.getItem('uid'))
 let client;
 let rtmClient;
 let rtmChannel;
 
-let displayName = sessionStorage.getItem('display_name')
+let displayName = sessionStorage.getItem('name')
 
 let localTracks = []
 let remoteUsers = {}
@@ -67,13 +67,15 @@ let joinStream = async () => {
 
     localTracks = await AgoraRTC.createMicrophoneAndCameraTracks()
     
+    let member = await createMember()
+
     // localTracks = await AgoraRTC.createMicrophoneAndCameraTracks({}, {encoderConfig:{
     //     width:{min:640, ideal:1920, max:1920},
     //     height:{min:480, ideal:1080, max:1080}
     // }})
 
     let player = `<div class="video__container" id="user-container-${UID}">
-                    <div class="username-wrapper"><span class="user-name">${displayName}</span></div>
+                    <div class="username-wrapper"><span class="user-name">${member.name}</span></div>
                     <div class="video-player" id="user-${UID}"></div>
                 </div>`
 
@@ -88,7 +90,7 @@ let joinStream = async () => {
 
 let switchToCamera = async () => {
     let player = `<div class="video__container" id="user-container-${UID}">
-                    <div class="username-wrapper"><span class="user-name">${displayName}</span></div>
+                    <div class="username-wrapper"><span class="user-name">Name</span></div>
                     <div class="video-player" id="user-${UID}"></div>
                 </div>`
     displayFrame.insertAdjacentHTML('beforeend', player)
@@ -109,10 +111,12 @@ let handleUserPublished = async (user, mediaType) => {
 
     await client.subscribe(user, mediaType)
 
+    let member = await getMember(user)
+
     let player = document.getElementById(`user-container-${user.UID}`)
     if(player === null) {
         player = `<div class="video__container" id="user-container-${user.UID}">
-                    <div class="username-wrapper"><span class="user-name">Name</span></div>
+                    <div class="username-wrapper"><span class="user-name">${member.name}</span></div>
                     <div class="video-player" id="user-${user.UID}"></div>
                 </div>`
 
@@ -196,7 +200,7 @@ let toggleScreen = async(e) => {
         displayFrame.style.display = 'block'
 
         let player = `<div class="video__container" id="user-container-${UID}">
-                        <div class="username-wrapper"><span class="user-name">${displayName}</span></div>
+                        <div class="username-wrapper"><span class="user-name">Name</span></div>
                         <div class="video-player" id="user-${UID}"></div>
                     </div>`
 
@@ -254,10 +258,44 @@ let leaveStream = async (e) => {
     }
 
     handleUserLeft()
+    deleteMember()
 
     window.open('/', '_self')
 
 }
+
+let createMember = async () => {
+    let response = await fetch('/create_member/', {
+        method: 'POST',
+        headers:{
+            'Content-Type': 'application/json'
+        },
+        body:JSON.stringify({'name': displayName, 'room_name': CHANNEL, 'uid': uid})
+    })
+
+    let member = await response.json()
+    return member
+}
+
+let getMember = async (user) => {
+    let response = await fetch(`/get_member/?uid=${user.uid}&room_name=${CHANNEL}`)
+    let member = await response.json()
+    return member
+}
+
+let deleteMember = async () => {
+    let response = await fetch('/delete_member/', {
+        method: 'POST',
+        headers:{
+            'Content-Type': 'application/json'
+        },
+        body:JSON.stringify({'name': displayName, 'room_name': CHANNEL, 'uid': uid})
+    })
+
+    let member = await response.json()
+}
+
+window.addEventListener('beforeunload', deleteMember)
 
 document.getElementById('camera-btn').addEventListener('click', toggleCamera)
 document.getElementById('mic-btn').addEventListener('click', toggleMic)
