@@ -7,136 +7,22 @@
     <main class="container">
         <div id="room__container">
 
-            {% comment %} {% include 'videochat/participants-component.html' %}
-
-            {% include 'videochat/stream-component.html' %}
-            
-            {% include 'videochat/chat-component.html' %} {% endcomment %}
             <section id="members__container">
 
                 <div id="members__header">
                     <p>Participants</p>
-                    <strong id="members__count">27</strong>
+                    <strong id="members__count">0</strong>
                 </div>
             
-                <div id="member__list">
-                    <div class="member__wrapper" id="member__1__wrapper">
-                        <span class="green__icon"></span>
-                        <p class="member_name">Sulammita</p>
-                    </div>
+                <div id="member__list"></div>
             
-                    <div class="member__wrapper" id="member__2__wrapper">
-                        <span class="green__icon"></span>
-                        <p class="member_name">Dennis Ivy</p>
-                    </div>
-            
-                    <div class="member__wrapper" id="member__2__wrapper">
-                        <span class="green__icon"></span>
-                        <p class="member_name">Shahriar P. Shuvo 👋:</p>
-                    </div>
-            
-                    <div class="member__wrapper" id="member__1__wrapper">
-                        <span class="green__icon"></span>
-                        <p class="member_name">Sulammita</p>
-                    </div>
-            
-                    <div class="member__wrapper" id="member__2__wrapper">
-                        <span class="green__icon"></span>
-                        <p class="member_name">Dennis Ivy</p>
-                    </div>
-            
-                    <div class="member__wrapper" id="member__2__wrapper">
-                        <span class="green__icon"></span>
-                        <p class="member_name">Shahriar P. Shuvo 👋:</p>
-                    </div>
-            
-                    <div class="member__wrapper" id="member__1__wrapper">
-                        <span class="green__icon"></span>
-                        <p class="member_name">Sulammita</p>
-                    </div>
-            
-                    <div class="member__wrapper" id="member__2__wrapper">
-                        <span class="green__icon"></span>
-                        <p class="member_name">Dennis Ivy</p>
-                    </div>
-            
-                    <div class="member__wrapper" id="member__2__wrapper">
-                        <span class="green__icon"></span>
-                        <p class="member_name">Shahriar P. Shuvo 👋:</p>
-                    </div>
-            
-                    <div class="member__wrapper" id="member__1__wrapper">
-                        <span class="green__icon"></span>
-                        <p class="member_name">Sulammita</p>
-                    </div>
-            
-                    <div class="member__wrapper" id="member__2__wrapper">
-                        <span class="green__icon"></span>
-                        <p class="member_name">Dennis Ivy</p>
-                    </div>
-                    <div class="member__wrapper" id="member__2__wrapper">
-                        <span class="green__icon"></span>
-                        <p class="member_name">Dennis Ivy</p>
-                    </div>
-            
-                    <div class="member__wrapper" id="member__2__wrapper">
-                        <span class="green__icon"></span>
-                        <p class="member_name">Shahriar P. Shuvo 👋:</p>
-                    </div>
-            
-                    <div class="member__wrapper" id="member__1__wrapper">
-                        <span class="green__icon"></span>
-                        <p class="member_name">Sulammita</p>
-                    </div>
-            
-                    <div class="member__wrapper" id="member__2__wrapper">
-                        <span class="green__icon"></span>
-                        <p class="member_name">Dennis Ivy</p>
-                    </div>
-            
-                    <div class="member__wrapper" id="member__2__wrapper">
-                        <span class="green__icon"></span>
-                        <p class="member_name">Shahriar P. Shuvo 👋:</p>
-                    </div>
-            
-                    <div class="member__wrapper" id="member__1__wrapper">
-                        <span class="green__icon"></span>
-                        <p class="member_name">Sulammita</p>
-                    </div>
-            
-                    <div class="member__wrapper" id="member__2__wrapper">
-                        <span class="green__icon"></span>
-                        <p class="member_name">Dennis Ivy</p>
-                    </div>
-            
-                    <div class="member__wrapper" id="member__2__wrapper">
-                        <span class="green__icon"></span>
-                        <p class="member_name">Shahriar P. Shuvo 👋:</p>
-                    </div>
-            
-                    <div class="member__wrapper" id="member__1__wrapper">
-                        <span class="green__icon"></span>
-                        <p class="member_name">Sulammita</p>
-                    </div>
-            
-                    <div class="member__wrapper" id="member__2__wrapper">
-                        <span class="green__icon"></span>
-                        <p class="member_name">Dennis Ivy</p>
-                    </div>
-                    <div class="member__wrapper" id="member__2__wrapper">
-                        <span class="green__icon"></span>
-                        <p class="member_name">Dennis Ivy</p>
-                    </div>
-                </div>
-            
-                </section>
+            </section>
+
             <section id="stream__container">
 
                 <div id="stream__box"></div>
             
-                <div id="streams__container">
-            
-                </div>
+                <div id="streams__container"></div>
             
                 <div class="stream__actions">
                     <button class="active" id="camera-btn">
@@ -154,131 +40,10 @@
                 </div>
             
             </section>
+
             <section id="messages__container">
 
-                <div id="messages">
-                    <div class="message__wrapper">
-                        <div class="message__body__bot">
-                            <strong class="message__author__bot">🤖 Mumble Bot</strong>
-                            <p class="message__text__bot">Welcome to the room, Don't be shy, say hello!</p>
-                        </div>
-                    </div>
-            
-                    <div class="message__wrapper">
-                        <div class="message__body__bot">
-                            <strong class="message__author__bot">🤖 Mumble Bot</strong>
-                            <p class="message__text__bot">Dennis Ivy just entered the room!</p>
-                        </div>
-                    </div>
-            
-                    <div class="message__wrapper">
-                        <div class="message__body">
-                            <strong class="message__author">Dennis Ivy</strong>
-                            <p class="message__text">Does anyone know hen he will be back?</p>
-                        </div>
-                    </div>
-            
-                    <div class="message__wrapper">
-                        <div class="message__body__bot">
-                            <strong class="message__author__bot">🤖 Mumble Bot</strong>
-                            <p class="message__text__bot">Sulamita  just entered the room!</p>
-                        </div>
-                    </div>
-            
-                    <div class="message__wrapper">
-                        <div class="message__body__bot">
-                            <strong class="message__author__bot">🤖 Mumble Bot</strong>
-                            <p class="message__text__bot">Shahriar P. Shuvo  just entered the room!</p>
-                        </div>
-                    </div>
-            
-                    <div class="message__wrapper">
-                        
-                        <div class="message__body">
-                            <strong class="message__author">Sulamita</strong>  
-                            <p class="message__text"> Great stream!</p>
-                        </div>
-                    </div>
-            
-                    <div class="message__wrapper">
-                        
-                        <div class="message__body">
-                            <strong class="message__author">Dennis Ivy</strong>  
-                            <p class="message__text"> Convert RGB color 
-                                codes to HEX HTML format for use 
-                                in web design and CSS.</p>
-                        </div>
-                    </div>
-            
-                    <div class="message__wrapper">
-                        
-                        <div class="message__body">
-                            <strong class="message__author">Shahriar P. Shuvo 👋</strong>  
-                            <p class="message__text">Does 
-                                anyone know hen he will be 
-                                back?</p>
-                        </div>
-                    </div>
-                    <div class="message__wrapper">
-                         
-                        <div class="message__body">
-                            <strong class="message__author">Sulamita</strong> 
-                            <p class="message__text">Great stream!</p>
-                        </div>
-                    </div>
-            
-                    <div class="message__wrapper">
-                        
-                        <div class="message__body">
-                            <strong class="message__author">Dennis Ivy</strong>   
-                            <p class="message__text">Convert RGB color 
-                                codes to HEX HTML format for use 
-                                in web design and CSS.</p>
-                        </div>
-                    </div>
-            
-                    <div class="message__wrapper">        
-                        <div class="message__body">
-                            <strong class="message__author">Shahriar P. Shuvo 👋</strong>
-                            <p class="message__text">Does 
-                                anyone know hen he will be 
-                                back?</p>
-                        </div>
-                    </div>
-            
-                    <div class="message__wrapper">
-                        <div class="message__body">
-                            <strong class="message__author">Sulamita</strong>
-                            <p class="message__text">Great stream!</p>
-                        </div>
-                    </div>
-            
-                    <div class="message__wrapper">
-                        <div class="message__body__bot">
-                            <strong class="message__author__bot">🤖 Mumble Bot</strong>
-                            <p class="message__text__bot">👋 Sulamita  has left the room</p>
-                        </div>
-                    </div>
-            
-                    <div class="message__wrapper">
-                        
-                        <div class="message__body">
-                            <strong class="message__author">Dennis Ivy</strong>
-                            <p class="message__text">Convert RGB color 
-                                codes to HEX HTML format for use 
-                                in web design and CSS.</p>
-                        </div>
-                    </div>
-            
-                    <div class="message__wrapper">
-                        <div class="message__body">
-                            <strong class="message__author">Shahriar P. Shuvo 👋</strong>
-                            <p class="message__text">Does 
-                                anyone know hen he will be 
-                                back?</p>
-                        </div>
-                    </div>
-                </div>
+                <div id="messages"> </div>
             
                 <form id="message__form">
                     <input type="text" name="message" placeholder="Send a message...." />
@@ -296,10 +61,3 @@
     <script type="text/javascript" src="{% static 'js/room_rtc.js' %}"></script>
 
 {% endblock %}
-
-{% comment %} {% block scripts %}
-    <script type="text/javascript" src="{% static 'js/AgoraRTC_N-4.11.1.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/room.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/room_rtc.js' %}"></script>
-{% endblock %} {% endcomment %}
-

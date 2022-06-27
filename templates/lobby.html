@@ -24,6 +24,11 @@
                      <label>Room Name</label>
                      <input type="text" name="room" required placeholder="Enter room name..." style="text-transform:uppercase;"/>
                  </div>
+
+                 {% comment %} <div class="form__field__wrapper">
+                    <label>Room Password</label>
+                    <input type="password" name="room" placeholder="Enter room password..."/>
+                </div> {% endcomment %}
  
                  <div class="form__field__wrapper">
                      <button type="submit">Go to Room 
@@ -36,10 +41,16 @@
 
      {% comment %} <script type="text/javascript" src="{% static 'js/lobby.js' %}"></script>  {% endcomment %}
      <script>
-         let form = document.getElementById('lobby__form')
+        let form = document.getElementById('lobby__form')
+
+        let displayName = sessionStorage.getItem('display_name')
+        if(displayName){
+            form.name.value = displayName
+        }
 
         let handleSubmit = async (e) => {
             e.preventDefault()
+            sessionStorage.setItem('display_name', e.target.name.value)
             let room = e.target.room.value.toUpperCase()
             let response = await fetch(`/get_token/?channel=${room}`)
             let data = await response.json()

@@ -1,33 +1,15 @@
 const APP_ID = 'f0c8d127f8434b5ba355114d9e3a2f6f'
 const CHANNEL = sessionStorage.getItem('room')
+const channelId = String(sessionStorage.getItem('room'))
 const TOKEN = sessionStorage.getItem('token')
-let RTM_TOKEN = sessionStorage.getItem('rtmToken')
-// let UID = Number(sessionStorage.getItem('UID'))
+let token = sessionStorage.getItem('rtmToken')
 let UID = sessionStorage.getItem('UID')
+let uid = String(sessionStorage.getItem('UID'))
 let client;
 let rtmClient;
 let rtmChannel;
-// let uid = UID.toString()
 
-// const client = AgoraRTC.createClient({ mode: 'rtc', codec: 'vp8' })
-
-// let UID = sessionStorage.getItem('UID')
-// if (!UID) {
-//     UID = String(Math.floor(Math.random() * 10000))
-//     sessionStorage.setItem('UID', UID)
-// }
-
-// let token = null;
-// let client;
-
-//room.html?room=234
-// const queryString = window.location.search
-// const urlParams = new URLSearchParams(queryString)
-// let CHANNEL = urlParams.get('room')
-
-// if (!CHANNEL) {
-//     CHANNEL = 'main'
-// }
+let displayName = sessionStorage.getItem('display_name')
 
 let localTracks = []
 let remoteUsers = {}
@@ -35,30 +17,28 @@ let remoteUsers = {}
 let localScreenTracks;
 let sharingScreen = false
 
-let rtmInit = async() => {
-    rtmClient = await AgoraRTM.createInstance(APP_ID)
-    // let uid = UID.toString()
-    console.log(typeof(UID))
-    await rtmClient.login({UID, RTM_TOKEN})
+let joinRoomInit = async () => {
 
-    rtmChannel = await rtmClient.createChannel(CHANNEL)
+    rtmClient = await AgoraRTM.createInstance(APP_ID)
+    await rtmClient.login({uid, token})
+
+    await rtmClient.addOrUpdateLocalUserAttributes({'name':displayName})
+    // try{
+    //      await rtmClient.login({uid, token})
+    // }catch(error){
+    //     console.log(error)
+    //     window.open('/', '_self')
+    // }
+
+    rtmChannel = await rtmClient.createChannel(channelId)
     await rtmChannel.join()
 
     rtmChannel.on('MemberJoined', handleMemberJoined)
-}
+    rtmChannel.on('MemberLeft', handleMemberLeft)
+    rtmChannel.on('ChannelMessage', handleChannelMessage)
 
-let joinRoomInit = async () => {
-    // let rtmUID = UID.toString()
-
-    // rtmClient = await AgoraRTM.createInstance(APP_ID)
-    // await rtmClient.login({UID, TOKEN})
-
-    // rtmChannel = await rtmClient.createChannel(CHANNEL)
-    // await rtmChannel.join()
-
-    // rtmChannel.on('MemberJoined', handleMemberJoined)
-
-    rtmInit()
+    getMembers()
+    addBotMessageToDom(`${displayName} has joined the room! 👋🏿`)
 
     client = AgoraRTC.createClient({mode:'rtc', codec:'vp8'})
     await client.join(APP_ID, CHANNEL, TOKEN, UID)
@@ -93,7 +73,7 @@ let joinStream = async () => {
     // }})
 
     let player = `<div class="video__container" id="user-container-${UID}">
-                    <div class="username-wrapper"><span class="user-name">Name</span></div>
+                    <div class="username-wrapper"><span class="user-name">${displayName}</span></div>
                     <div class="video-player" id="user-${UID}"></div>
                 </div>`
 
@@ -108,7 +88,7 @@ let joinStream = async () => {
 
 let switchToCamera = async () => {
     let player = `<div class="video__container" id="user-container-${UID}">
-                    <div class="username-wrapper"><span class="user-name">Name</span></div>
+                    <div class="username-wrapper"><span class="user-name">${displayName}</span></div>
                     <div class="video-player" id="user-${UID}"></div>
                 </div>`
     displayFrame.insertAdjacentHTML('beforeend', player)
@@ -216,7 +196,7 @@ let toggleScreen = async(e) => {
         displayFrame.style.display = 'block'
 
         let player = `<div class="video__container" id="user-container-${UID}">
-                        <div class="username-wrapper"><span class="user-name">Name</span></div>
+                        <div class="username-wrapper"><span class="user-name">${displayName}</span></div>
                         <div class="video-player" id="user-${UID}"></div>
                     </div>`
 
@@ -248,8 +228,40 @@ let toggleScreen = async(e) => {
     }
 }
 
+let leaveStream = async (e) => {
+    e.preventDefault()
+
+    for(let i = 0; localTracks.LENGTH > i; I++){
+        localTracks[i].stop()
+        localTracks[i].close()
+    }
+
+    await client.unpublish([localTracks[0], localTracks[1]])
+
+    if(localScreenTracks){
+        await client.unpublish([localScreenTracks])
+    }
+
+    document.getElementById(`user-container-${UID}`).remove()
+
+    if(userIdInDisplayFrame === `user-container-${UID}`){
+        displayFrame.style.display = null
+
+        for(let i = 0; videoFrames.length > i; i++){
+            videoFrames[i].style.height = '300px'
+            videoFrames[i].style.width = '300px'
+        }
+    }
+
+    handleUserLeft()
+
+    window.open('/', '_self')
+
+}
+
 document.getElementById('camera-btn').addEventListener('click', toggleCamera)
 document.getElementById('mic-btn').addEventListener('click', toggleMic)
 document.getElementById('screen-btn').addEventListener('click', toggleScreen)
+document.getElementById('leave-btn').addEventListener('click', leaveStream)
 
 joinRoomInit()
