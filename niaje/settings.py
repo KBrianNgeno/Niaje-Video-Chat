@@ -145,7 +145,7 @@ if not DEBUG:
     STATIC_ROOT = ''
 
 STATICFILES_DIRS = [
-    BASE_DIR / 'static'
+    os.path.join(BASE_DIR, 'static')
 ]
 
 MEDIA_ROOT = BASE_DIR / 'static/images'
