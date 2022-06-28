@@ -298,6 +298,10 @@
   #chat__button {
     display: block;
   }
+
+  #screen-btn {
+    display: none;
+  }
 }
 
 #stream__box {
