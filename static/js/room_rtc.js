@@ -3,7 +3,7 @@ const CHANNEL = sessionStorage.getItem('room')
 const channelId = String(sessionStorage.getItem('room'))
 const TOKEN = sessionStorage.getItem('token')
 let token = sessionStorage.getItem('rtmToken')
-let UID = sessionStorage.getItem('uid')
+// let uid = sessionStorage.getItem('uid')
 let uid = String(sessionStorage.getItem('uid'))
 let client;
 let rtmClient;
@@ -41,20 +41,20 @@ let joinRoomInit = async () => {
     addBotMessageToDom(`${displayName} has joined the room! 👋🏿`)
 
     client = AgoraRTC.createClient({mode:'rtc', codec:'vp8'})
-    await client.join(APP_ID, CHANNEL, TOKEN, UID)
+    await client.join(APP_ID, CHANNEL, TOKEN, uid)
     
     client.on('user-published', handleUserPublished)
     client.on('user-left', handleUserLeft)
 
     // try{
-    //     await client.join(APP_ID, CHANNEL, TOKEN, UID)
+    //     await client.join(APP_ID, CHANNEL, TOKEN, uid)
     // }catch(error){
     //     console.log(error)
     //     window.open('/', '_self')
     // }
 
     // client = AgoraRTC.createClient({ mode: 'rtc', codec: 'vp8' })  
-    // await client.join(APP_ID, CHANNEL, TOKEN, UID)
+    // await client.join(APP_ID, CHANNEL, TOKEN, uid)
 
     // client.on('user-published', handleUserPublished)
     // client.on('user-left', handleUserLeft)
@@ -65,7 +65,12 @@ let joinRoomInit = async () => {
 
 let joinStream = async () => {
 
-    localTracks = await AgoraRTC.createMicrophoneAndCameraTracks()
+    localTracks = await AgoraRTC.createMicrophoneAndCameraTracks(
+        // {}, {encoderConfig:{
+        //     width:{min:640, ideal:1280, max:1920},
+        //     height:{min:480, ideal:720, max:1080}
+        // }}
+        )
     
     let member = await createMember()
 
@@ -74,24 +79,24 @@ let joinStream = async () => {
     //     height:{min:480, ideal:1080, max:1080}
     // }})
 
-    let player = `<div class="video__container" id="user-container-${UID}">
+    let player = `<div class="video__container" id="user-container-${uid}">
                     <div class="username-wrapper"><span class="user-name">${member.name}</span></div>
-                    <div class="video-player" id="user-${UID}"></div>
+                    <div class="video-player" id="user-${uid}"></div>
                 </div>`
 
     document.getElementById('streams__container').insertAdjacentHTML('beforeend', player)
-    document.getElementById(`user-container-${UID}`).addEventListener('click', expandVideoFrame)
+    document.getElementById(`user-container-${uid}`).addEventListener('click', expandVideoFrame)
      
-    localTracks[1].play(`user-${UID}`)
+    localTracks[1].play(`user-${uid}`)
 
     await client.publish([localTracks[0], localTracks[1]])
 
 }
 
 let switchToCamera = async () => {
-    let player = `<div class="video__container" id="user-container-${UID}">
-                    <div class="username-wrapper"><span class="user-name">Name</span></div>
-                    <div class="video-player" id="user-${UID}"></div>
+    let player = `<div class="video__container" id="user-container-${uid}">
+                    <div class="username-wrapper"><span class="user-name">${displayName}</span></div>
+                    <div class="video-player" id="user-${uid}"></div>
                 </div>`
     displayFrame.insertAdjacentHTML('beforeend', player)
 
@@ -101,50 +106,50 @@ let switchToCamera = async () => {
     document.getElementById('mic-btn').classList.remove('active')
     document.getElementById('screen-btn').classList.remove('active')
 
-    localTracks[1].play(`user-${UID}`)
+    localTracks[1].play(`user-${uid}`)
     await client.publish([localTracks[1]])
 
 }
 
 let handleUserPublished = async (user, mediaType) => {
-    remoteUsers[user.UID] = user
+    remoteUsers[user.uid] = user
 
     await client.subscribe(user, mediaType)
 
     let member = await getMember(user)
 
-    let player = document.getElementById(`user-container-${user.UID}`)
+    let player = document.getElementById(`user-container-${user.uid}`)
     if(player === null) {
-        player = `<div class="video__container" id="user-container-${user.UID}">
+        player = `<div class="video__container" id="user-container-${user.uid}">
                     <div class="username-wrapper"><span class="user-name">${member.name}</span></div>
-                    <div class="video-player" id="user-${user.UID}"></div>
+                    <div class="video-player" id="user-${user.uid}"></div>
                 </div>`
 
         document.getElementById('streams__container').insertAdjacentHTML('beforeend', player)
-        document.getElementById(`user-container-${user.UID}`).addEventListener('click', expandVideoFrame)
+        document.getElementById(`user-container-${user.uid}`).addEventListener('click', expandVideoFrame)
     }
 
     if(displayFrame.style.display){
-        let videoFrame = document.getElementById(`user-container-${user.UID}`)
+        let videoFrame = document.getElementById(`user-container-${user.uid}`)
         videoFrame.style.height = '200px'
         videoFrame.style.width = '200px'
     }
 
     if (mediaType === 'video'){
-        user.videoTrack.play(`user-${user.UID}`)
+        user.videoTrack.play(`user-${user.uid}`)
     }
 
     if (mediaType === 'audio'){
-        user.audioTrack.play(`user-${user.UID}`)
+        user.audioTrack.play(`user-${user.uid}`)
     }
 
 }
 
 let handleUserLeft = async (user) => {
-    delete remoteUsers[user.UID]
-    document.getElementById(`user-container-${user.UID}`).remove()
+    delete remoteUsers[user.uid]
+    document.getElementById(`user-container-${user.uid}`).remove()
 
-    if(userIdInDisplayFrame === `user-container-${user.UID}`){
+    if(userIdInDisplayFrame === `user-container-${user.uid}`){
         displayFrame.style.display = null
 
         let videoFrames = document.getElementsByClassName('video__container')
@@ -196,19 +201,19 @@ let toggleScreen = async(e) => {
             // optimizationMode: "detail",}
             )
 
-        document.getElementById(`user-container-${UID}`).remove()
+        document.getElementById(`user-container-${uid}`).remove()
         displayFrame.style.display = 'block'
 
-        let player = `<div class="video__container" id="user-container-${UID}">
-                        <div class="username-wrapper"><span class="user-name">Name</span></div>
-                        <div class="video-player" id="user-${UID}"></div>
+        let player = `<div class="video__container" id="user-container-${uid}">
+                        <div class="username-wrapper"><span class="user-name">${displayName}</span></div>
+                        <div class="video-player" id="user-${uid}"></div>
                     </div>`
 
         displayFrame.insertAdjacentHTML('beforeend', player)
-        document.getElementById(`user-container-${UID}`).addEventListener('click', expandVideoFrame)
+        document.getElementById(`user-container-${uid}`).addEventListener('click', expandVideoFrame)
 
-        userIdInDisplayFrame = `user-container-${UID}`
-        localScreenTracks.play(`user-${UID}`)
+        userIdInDisplayFrame = `user-container-${uid}`
+        localScreenTracks.play(`user-${uid}`)
 
         await client.unpublish([localTracks[1]])
         await client.publish([localScreenTracks])
@@ -225,7 +230,7 @@ let toggleScreen = async(e) => {
         sharingScreen = false
         // screenButton.classList.remove('active')
         cameraButton.style.display = 'block'
-        document.getElementById(`user-container-${UID}`).remove()
+        document.getElementById(`user-container-${uid}`).remove()
         await client.unpublish([localScreenTracks])
 
         switchToCamera()
@@ -246,9 +251,9 @@ let leaveStream = async (e) => {
         await client.unpublish([localScreenTracks])
     }
 
-    document.getElementById(`user-container-${UID}`).remove()
+    document.getElementById(`user-container-${uid}`).remove()
 
-    if(userIdInDisplayFrame === `user-container-${UID}`){
+    if(userIdInDisplayFrame === `user-container-${uid}`){
         displayFrame.style.display = null
 
         for(let i = 0; videoFrames.length > i; i++){

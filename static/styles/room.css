@@ -37,7 +37,7 @@
   padding: 0 1rem;
   position: fixed;
   font-size: 18px;
-  background-color: #323143;
+  background-color: #363739;
   width: 218px;
 }
 
@@ -65,7 +65,7 @@
   height: 8px;
   width: 8px;
   border-radius: 50%;
-  background-color: #2aca3e;
+  background-color: #008080;
 }
 
 .member_name{
@@ -122,13 +122,13 @@
 
 .message__author {
   margin-right: 10px;
-  color: #2aca3e!important;
+  color: #6495ED!important;
 
 }
 
 .message__author__bot {
   margin-right: 10px;
-  color: #a52aca!important;
+  color: #0096FF!important;
 
 }
 
@@ -207,7 +207,7 @@
   display:flex;
   justify-content: center;
   align-items: center;
-  border: 2px solid #b366f9;
+  border: 2px solid #6082B6;
   border-radius: 5%;
   cursor: pointer;
   overflow: hidden;
@@ -351,5 +351,5 @@
 .stream__actions button.active,
 .stream__actions a:hover,
 .stream__actions button:hover {
-  background-color: #845695;
+  background-color: #C41E3A;
 }
