@@ -66,10 +66,12 @@ let joinRoomInit = async () => {
 let joinStream = async () => {
 
     localTracks = await AgoraRTC.createMicrophoneAndCameraTracks(
-        // {}, {encoderConfig:{
-        //     width:{min:640, ideal:1280, max:1920},
-        //     height:{min:480, ideal:720, max:1080}
-        // }}
+        {}, {videoConfig:{
+            width:{min:600, ideal:640, max:700},
+            height:{min:400, ideal:480, max:500}
+        }}, {audioConfig:{
+            AudioEncoderConfigurationPreset: "speech_low_quality"
+        }}
         )
     
     let member = await createMember()
